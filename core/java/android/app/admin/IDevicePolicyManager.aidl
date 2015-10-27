@@ -537,4 +537,6 @@ interface IDevicePolicyManager {
     boolean canUsbDataSignalingBeDisabled();
 
     List<UserHandle> listForegroundAffiliatedUsers();
+
+    boolean requireSecureKeyguard(int userHandle);
 }
