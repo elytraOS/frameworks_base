@@ -106,4 +106,7 @@
 
      <!-- 5G toggle in internet dialog -->
     <string name="enable_fiveg">Enable 5G</string>
+
+    <!-- Name of the ims status bar icon. -->
+    <string name="status_bar_ims">VoLTE/VoWiFi</string>
 </resources>
