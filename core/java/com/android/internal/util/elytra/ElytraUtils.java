@@ -43,7 +43,7 @@ import android.view.KeyEvent;
 import android.util.DisplayMetrics;
 import android.view.IWindowManager;
 import android.view.WindowManagerGlobal;
-
+import android.os.SystemClock;
 import com.android.internal.R;
 
 import java.util.Arrays;
@@ -191,14 +191,6 @@ public class ElytraUtils {
                Locale.CHINESE.getLanguage());
     }
 
-    // Method to turn off the screen
-    public static void switchScreenOff(Context ctx) {
-        PowerManager pm = (PowerManager) ctx.getSystemService(Context.POWER_SERVICE);
-        if (pm!= null) {
-            pm.goToSleep(SystemClock.uptimeMillis());
-        }
-    }
-
     public static void sendKeycode(int keycode) {
         long when = SystemClock.uptimeMillis();
         final KeyEvent evDown = new KeyEvent(when, when, KeyEvent.ACTION_DOWN, keycode, 0,
@@ -230,5 +222,12 @@ public class ElytraUtils {
         boolean maskDisplayCutout = context.getResources().getBoolean(R.bool.config_maskMainBuiltInDisplayCutout);
         boolean displayCutoutExists = (!TextUtils.isEmpty(displayCutout) && !maskDisplayCutout);
         return displayCutoutExists;
+    }
+
+   public static void switchScreenOff(Context ctx) {
+        PowerManager pm = ctx.getSystemService(PowerManager.class);
+        if (pm != null) {
+            pm.goToSleep(SystemClock.uptimeMillis());
+        }
     }
 }
