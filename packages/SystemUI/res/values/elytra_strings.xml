@@ -63,4 +63,9 @@
     <string name="quick_settings_monotoggle_tile">Audio mode</string>
     <string name="quick_settings_monotoggle_tile_mono">Mono audio</string>
     <string name="quick_settings_monotoggle_tile_stereo">Stereo audio</string>
+
+    <!-- Screenshot QS tile -->
+    <string name="quick_settings_screenshot_label">Screenshot</string>
+    <string name="quick_settings_full_screenshot_label">Full</string>
+    <string name="quick_settings_region_screenshot_label">Partial</string>
 </resources>
