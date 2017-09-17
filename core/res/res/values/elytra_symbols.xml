@@ -75,4 +75,9 @@
     <!-- Alert Slider -->
     <java-symbol type="bool" name="config_hasAlertSlider" />
     <java-symbol type="integer" name="config_alertSliderLocation" />
+
+    <!-- Battery light customization -->
+    <java-symbol type="bool" name="config_hasNotificationLed" />
+    <java-symbol type="bool" name="config_intrusiveBatteryLed" />
+    <java-symbol type="bool" name="config_ledCanPulse" />
 </resources>
