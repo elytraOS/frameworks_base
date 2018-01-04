@@ -5317,6 +5317,14 @@ public final class Settings {
         public static final String INCREASING_RING_RAMP_UP_TIME = "increasing_ring_ramp_up_time";
 
         /**
+         * Wheter to play notification sound and vibration if screen is ON
+         * 0 - never
+         * 1 - always
+         * @hide
+         */
+        public static final String NOTIFICATION_SOUND_VIB_SCREEN_ON = "notification_sound_vib_screen_on";
+
+        /**
          * Whether the torch launch gesture to double tap or long press the power button when the
          * screen is off should be enabled. *
          * 0: disabled
