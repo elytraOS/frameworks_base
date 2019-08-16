@@ -209,5 +209,6 @@ public class SecureSettings {
         Settings.Secure.QS_SHOW_BRIGHTNESS,
         Settings.Secure.QS_BRIGHTNESS_POSITION_BOTTOM,
         Settings.Secure.QS_SHOW_AUTO_BRIGHTNESS_BUTTON,
+        Settings.Secure.TETHERING_ALLOW_VPN_UPSTREAMS,
     };
 }
