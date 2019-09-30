@@ -71,4 +71,8 @@
     <java-symbol type="bool" name="config_proximityCheckOnWake" />
     <java-symbol type="integer" name="config_proximityCheckTimeout" />
     <java-symbol type="bool" name="config_proximityCheckOnWakeEnabledByDefault" />
+
+    <!-- Alert Slider -->
+    <java-symbol type="bool" name="config_hasAlertSlider" />
+    <java-symbol type="integer" name="config_alertSliderLocation" />
 </resources>
