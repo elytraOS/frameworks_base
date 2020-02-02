@@ -82,4 +82,9 @@
     <string name="qs_data_switch_toast_1">Currently only one SIM card is inserted</string>
     <string name="qs_data_switch_changed_1">Switch data card to SIM 1.</string>
     <string name="qs_data_switch_changed_2">Switch data card to SIM 2.</string>
+
+    <!-- Mono QS Tile -->
+    <string name="quick_settings_monotoggle_tile">Audio mode</string>
+    <string name="quick_settings_monotoggle_tile_mono">Mono audio</string>
+    <string name="quick_settings_monotoggle_tile_stereo">Stereo audio</string>
 </resources>
