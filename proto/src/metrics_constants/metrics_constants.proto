@@ -7437,5 +7437,8 @@ message MetricsEvent {
     // END OF AOSP CONSTANTS
     // elytraOS Metrics
     ELYTRA = 2772;
+
+    // Panel for Mobile Data
+    PANEL_MOBILE_DATA = 2002;
   }
 }
