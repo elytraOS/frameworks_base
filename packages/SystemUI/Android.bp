@@ -124,6 +124,7 @@ android_library {
         "colorkt",
         "themelib",
         "AndroidSystemBlur-platform",
+        "vendor.lineage.powershare-V1.0-java",
     ],
     manifest: "AndroidManifest.xml",
 
@@ -213,6 +214,7 @@ android_library {
         "dagger2",
         "jsr330",
         "WindowManager-Shell",
+        "vendor.lineage.powershare-V1.0-java",
     ],
     libs: [
         "android.test.runner",
