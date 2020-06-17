@@ -99,4 +99,7 @@
     <java-symbol type="bool" name="config_intrusiveBatteryLed" />
     <java-symbol type="bool" name="config_multiColorBatteryLed" />
     <java-symbol type="bool" name="config_ledCanPulse" />
+
+    <!-- Wired/BT headset focus mode -->
+    <java-symbol type="bool" name="config_deviceRingtoneFocusMode" />
 </resources>
