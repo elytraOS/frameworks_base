@@ -229,6 +229,8 @@ class AutomaticBrightnessController {
     private Clock mClock;
     private final Injector mInjector;
 
+    private boolean mAutoBrightnessOneShot;
+
     AutomaticBrightnessController(Callbacks callbacks, Looper looper,
             SensorManager sensorManager, Sensor lightSensor,
             BrightnessMappingStrategy interactiveModeBrightnessMapper,
@@ -366,7 +368,8 @@ class AutomaticBrightnessController {
 
     public void configure(int state, @Nullable BrightnessConfiguration configuration,
             float brightness, boolean userChangedBrightness, float adjustment,
-            boolean userChangedAutoBrightnessAdjustment, int displayPolicy) {
+            boolean userChangedAutoBrightnessAdjustment, int displayPolicy,
+            boolean autoBrightnessOneShot) {
         mState = state;
         mHbmController.setAutoBrightnessEnabled(mState);
         // While dozing, the application processor may be suspended which will prevent us from
@@ -401,6 +404,8 @@ class AutomaticBrightnessController {
 
         if (changed) {
             updateAutoBrightness(false /*sendUpdate*/, userInitiatedChange);
+        } else {
+            handleSettingsChange(autoBrightnessOneShot);
         }
     }
 
@@ -435,6 +440,17 @@ class AutomaticBrightnessController {
     @VisibleForTesting
     float getAmbientLux() {
         return mAmbientLux;
+    }
+
+    private void handleSettingsChange(boolean autoBrightnessOneShot) {
+        if (mAutoBrightnessOneShot == autoBrightnessOneShot) return;
+        mAutoBrightnessOneShot = autoBrightnessOneShot;
+        if (mAutoBrightnessOneShot) {
+            mSensorManager.unregisterListener(mLightSensorListener);
+        } else {
+            mSensorManager.registerListener(mLightSensorListener, mLightSensor,
+                mCurrentLightSensorRate * 1000, mHandler);
+        }
     }
 
     private boolean setDisplayPolicy(int policy) {
@@ -894,6 +910,9 @@ class AutomaticBrightnessController {
             if (sendUpdate) {
                 mCallbacks.updateBrightness();
             }
+        }
+        if (mAutoBrightnessOneShot) {
+            mSensorManager.unregisterListener(mLightSensorListener);
         }
     }
 

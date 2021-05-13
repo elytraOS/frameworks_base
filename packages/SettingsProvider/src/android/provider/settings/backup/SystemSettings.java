@@ -91,5 +91,6 @@ public class SystemSettings {
         Settings.System.NOTIFICATION_LIGHT_PULSE,
         Settings.System.FULLSCREEN_GESTURES,
         Settings.System.DOUBLE_TAP_SLEEP_GESTURE,
+        Settings.System.AUTO_BRIGHTNESS_ONE_SHOT,
     };
 }
