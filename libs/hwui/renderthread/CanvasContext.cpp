@@ -257,7 +257,7 @@ void CanvasContext::setStopped(bool stopped) {
 }
 
 void CanvasContext::allocateBuffers() {
-    if (mNativeSurface) {
+    if (mNativeSurface && Properties::isDrawingEnabled()) {
         ANativeWindow_tryAllocateBuffers(mNativeSurface->getNativeWindow());
     }
 }
@@ -481,7 +481,8 @@ nsecs_t CanvasContext::draw() {
     SkRect dirty;
     mDamageAccumulator.finish(&dirty);
 
-    if (dirty.isEmpty() && Properties::skipEmptyFrames && !surfaceRequiresRedraw()) {
+    if (!Properties::isDrawingEnabled() ||
+        (dirty.isEmpty() && Properties::skipEmptyFrames && !surfaceRequiresRedraw())) {
         mCurrentFrameInfo->addFlag(FrameInfoFlags::SkippedFrame);
         if (auto grContext = getGrContext()) {
             // Submit to ensure that any texture uploads complete and Skia can
