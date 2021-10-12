@@ -95,9 +95,10 @@ public class PropImitationHooks {
         sIsFinsky = packageName.equals(PACKAGE_FINSKY);
         sIsPhotos = sSpoofGapps && packageName.equals(PACKAGE_GPHOTOS);
 
-        if (!sCertifiedFp.isEmpty() && (sIsGms || sIsFinsky)) {
-            dlog("Setting certified fingerprint for: " + packageName);
+        if (!sCertifiedFp.isEmpty() && sIsGms) {
+            dlog("Spoofing build for GMS");
             setPropValue("FINGERPRINT", sCertifiedFp);
+            setPropValue("MODEL", Build.MODEL + "\u200b");
         } else if (!sStockFp.isEmpty() && packageName.equals(PACKAGE_ARCORE)) {
             dlog("Setting stock fingerprint for: " + packageName);
             setPropValue("FINGERPRINT", sStockFp);
