@@ -21,6 +21,36 @@ LOCAL_LICENSE_CONDITIONS := notice
 LOCAL_NOTICE_FILE := $(LOCAL_PATH)/../../NOTICE
 LOCAL_REQUIRED_MODULES := \
 	FontNotoSerifSourceOverlay \
+	IconPackCircularAndroidOverlay \
+	IconPackCircularLauncherOverlay \
+	IconPackCircularSettingsOverlay \
+	IconPackCircularSystemUIOverlay \
+	IconPackCircularThemePickerOverlay \
+	IconPackVictorAndroidOverlay \
+	IconPackVictorLauncherOverlay \
+	IconPackVictorSettingsOverlay \
+	IconPackVictorSystemUIOverlay \
+	IconPackVictorThemePickerOverlay \
+	IconPackSamAndroidOverlay \
+	IconPackSamLauncherOverlay \
+	IconPackSamSettingsOverlay \
+	IconPackSamSystemUIOverlay \
+	IconPackSamThemePickerOverlay \
+	IconPackKaiAndroidOverlay \
+	IconPackKaiLauncherOverlay \
+	IconPackKaiSettingsOverlay \
+	IconPackKaiSystemUIOverlay \
+	IconPackKaiThemePickerOverlay \
+	IconPackFilledAndroidOverlay \
+	IconPackFilledLauncherOverlay \
+	IconPackFilledSettingsOverlay \
+	IconPackFilledSystemUIOverlay \
+	IconPackFilledThemePickerOverlay \
+	IconPackRoundedAndroidOverlay \
+	IconPackRoundedLauncherOverlay \
+	IconPackRoundedSettingsOverlay \
+	IconPackRoundedSystemUIOverlay \
+	IconPackRoundedThemePickerOverlay \
 	NavigationBarMode2ButtonOverlay \
 	NavigationBarMode3ButtonOverlay \
 	NavigationBarModeGesturalOverlay \
