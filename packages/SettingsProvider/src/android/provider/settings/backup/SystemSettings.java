@@ -91,5 +91,6 @@ public class SystemSettings {
         Settings.System.VIBRATE_ON_DISCONNECT,
         Settings.System.TORCH_POWER_BUTTON_GESTURE,
         Settings.System.FULLSCREEN_GESTURES,
+        Settings.System.QS_SHOW_BATTERY_ESTIMATE,
     };
 }

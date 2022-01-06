@@ -5353,6 +5353,13 @@ public final class Settings {
         public static final String NOTIFICATION_SOUND_VIB_SCREEN_ON = "notification_sound_vib_screen_on";
 
         /**
+         * Whether to show battery estimates in QS
+         * @hide
+         */
+        @Readable
+        public static final String QS_SHOW_BATTERY_ESTIMATE = "qs_show_battery_estimate";
+
+        /**
          * Whether to show heads up only for dialer and sms apps
          * @hide
          */
