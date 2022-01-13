@@ -6,8 +6,15 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.ContentResolver;
+
+import android.database.ContentObserver;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.UserHandle;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -82,9 +89,32 @@ public class KeyguardClockSwitch extends RelativeLayout {
     private int[] mColorPalette;
 
     private int mClockSwitchYAmount;
+    private final Handler mHandler = new Handler();
+
+    private ClockSettingsObserver mClockSettingsObserver = new ClockSettingsObserver(mHandler);
+
 
     public KeyguardClockSwitch(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mClockSettingsObserver.observe();
+    }
+
+    private class ClockSettingsObserver extends ContentObserver {
+        ClockSettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(Settings.System.getUriFor(Settings.System.LS_SMOL_CLOCK), false, this, UserHandle.USER_ALL);
+        }
+
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            if (uri.equals(Settings.System.getUriFor(Settings.System.LS_SMOL_CLOCK))) {
+                animateClockChange(Settings.System.getInt(mContext.getContentResolver(), Settings.System.LS_SMOL_CLOCK, 0) != 1);;
+            }
+        }
     }
 
     @Override
@@ -196,6 +226,8 @@ public class KeyguardClockSwitch extends RelativeLayout {
     }
 
     private void animateClockChange(boolean useLargeClock) {
+        boolean alwaysSmallClock = Settings.System.getInt(mContext.getContentResolver(), Settings.System.LS_SMOL_CLOCK, 0) != 0;
+
         if (mClockInAnim != null) mClockInAnim.cancel();
         if (mClockOutAnim != null) mClockOutAnim.cancel();
         if (mSmartspaceAnim != null) mSmartspaceAnim.cancel();
@@ -203,7 +235,7 @@ public class KeyguardClockSwitch extends RelativeLayout {
         View in, out;
         int direction = 1;
         float smartspaceYTranslation;
-        if (useLargeClock) {
+        if (useLargeClock && !alwaysSmallClock) {
             out = mClockFrame;
             in = mLargeClockFrame;
             if (indexOfChild(in) == -1) addView(in);
@@ -232,22 +264,26 @@ public class KeyguardClockSwitch extends RelativeLayout {
             }
         });
 
-        in.setAlpha(0);
         in.setVisibility(View.VISIBLE);
-        mClockInAnim = new AnimatorSet();
-        mClockInAnim.setDuration(CLOCK_IN_MILLIS);
-        mClockInAnim.setInterpolator(Interpolators.LINEAR_OUT_SLOW_IN);
-        mClockInAnim.playTogether(ObjectAnimator.ofFloat(in, View.ALPHA, 1f),
-                ObjectAnimator.ofFloat(in, View.TRANSLATION_Y, direction * mClockSwitchYAmount, 0));
-        mClockInAnim.setStartDelay(CLOCK_OUT_MILLIS / 2);
-        mClockInAnim.addListener(new AnimatorListenerAdapter() {
-            public void onAnimationEnd(Animator animation) {
-                mClockInAnim = null;
-            }
-        });
+        if(!alwaysSmallClock){
+            in.setAlpha(0);
+            mClockInAnim = new AnimatorSet();
+            mClockInAnim.setDuration(CLOCK_IN_MILLIS);
+            mClockInAnim.setInterpolator(Interpolators.LINEAR_OUT_SLOW_IN);
+            mClockInAnim.playTogether(ObjectAnimator.ofFloat(in, View.ALPHA, 1f),
+                    ObjectAnimator.ofFloat(in, View.TRANSLATION_Y, direction * mClockSwitchYAmount, 0));
+            mClockInAnim.setStartDelay(CLOCK_OUT_MILLIS / 2);
+            mClockInAnim.addListener(new AnimatorListenerAdapter() {
+                public void onAnimationEnd(Animator animation) {
+                    mClockInAnim = null;
+                }
+            });
 
-        mClockInAnim.start();
-        mClockOutAnim.start();
+            mClockInAnim.start();
+            mClockOutAnim.start();
+        } else{
+            in.setAlpha(100);
+        }
 
         if (mSmartspaceView != null) {
             mSmartspaceAnim = ObjectAnimator.ofFloat(mSmartspaceView, View.TRANSLATION_Y,
