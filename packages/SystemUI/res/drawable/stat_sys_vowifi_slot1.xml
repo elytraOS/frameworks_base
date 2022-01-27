@@ -6,7 +6,7 @@
     android:insetRight="2dp">
     <vector
         android:width="23.375dp"
-        android:height="16.5dp"
+        android:height="16dp"
         android:viewportWidth="34"
         android:viewportHeight="24">
         <path
