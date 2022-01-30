@@ -31,4 +31,7 @@
 
     <!-- QQS Brightness slider -->
     <dimen name="quick_qs_brightness_margin_top">24dp</dimen>
+
+    <!-- Size of vibration icon od volume panel-->
+    <dimen name="volume_p404_ringer_drawer_icon_size">20dp</dimen>
 </resources>

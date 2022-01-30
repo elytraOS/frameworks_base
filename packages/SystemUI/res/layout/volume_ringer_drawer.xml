@@ -64,8 +64,8 @@
 
                 <ImageView
                     android:id="@+id/volume_drawer_vibrate_icon"
-                    android:layout_width="@dimen/volume_ringer_drawer_icon_size"
-                    android:layout_height="@dimen/volume_ringer_drawer_icon_size"
+                    android:layout_width="@dimen/volume_p404_ringer_drawer_icon_size"
+                    android:layout_height="@dimen/volume_p404_ringer_drawer_icon_size"
                     android:layout_gravity="center"
                     android:tint="?android:attr/textColorPrimary"
                     android:src="@drawable/ic_volume_ringer_vibrate" />
