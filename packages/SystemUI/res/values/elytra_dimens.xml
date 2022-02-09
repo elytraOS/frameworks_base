@@ -34,4 +34,7 @@
 
     <!-- Size of vibration icon od volume panel-->
     <dimen name="volume_p404_ringer_drawer_icon_size">20dp</dimen>
+
+    <!-- Dialog margin -->
+    <dimen name="rdnt_margin_dialog">12dp</dimen>
 </resources>
