@@ -105,13 +105,7 @@ public class DataSaverTile extends QSTileImpl<BooleanState> implements
             dialog.setNeutralButton(com.android.internal.R.string.cancel, null);
             dialog.setShowForAllUsers(true);
 
-            if (view != null) {
-                mDialogLaunchAnimator.showFromView(dialog, view, new DialogCuj(
-                        InteractionJankMonitor.CUJ_SHADE_DIALOG_OPEN,
-                        INTERACTION_JANK_TAG));
-            } else {
-                dialog.show();
-            }
+            dialog.show();
         });
     }
 

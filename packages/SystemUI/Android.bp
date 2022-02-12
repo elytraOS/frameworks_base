@@ -134,6 +134,7 @@ android_library {
         "res-product",
         "res-keyguard",
         "res",
+        "res-blur",
     ],
     static_libs: [
         "WifiTrackerLib",
@@ -179,6 +180,7 @@ android_library {
         "LowLightDreamLib",
         "motion_tool_lib",
         "bcsmartspace-google",
+        "AndroidSystemBlur-platform",
     ],
     manifest: "AndroidManifest.xml",
     libs: [

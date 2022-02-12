@@ -147,7 +147,7 @@ public class DndTile extends QSTileImpl<BooleanState> {
         if (mState.value) {
             mController.setZen(ZEN_MODE_OFF, null, TAG);
         } else {
-            enableZenMode(view);
+            enableZenMode(null);
         }
     }
 

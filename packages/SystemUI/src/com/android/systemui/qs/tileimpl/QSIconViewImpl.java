@@ -202,13 +202,12 @@ public class QSIconViewImpl extends QSIconView {
             mColorAnimator.setValues(values);
             mColorAnimator.removeAllListeners();
             mColorAnimator.addUpdateListener(animation -> {
-                setTint(iv, (int) animation.getAnimatedValue());
+                setTint(iv, toColor);
             });
             mColorAnimator.addListener(new EndRunnableAnimatorListener(endRunnable));
 
             mColorAnimator.start();
         } else {
-
             setTint(iv, toColor);
             endRunnable.run();
         }
@@ -249,7 +248,7 @@ public class QSIconViewImpl extends QSIconView {
             return Utils.getColorAttrDefaultColor(context, android.R.attr.textColorPrimary);
         } else if (state.state == Tile.STATE_ACTIVE) {
             return Utils.getColorAttrDefaultColor(context,
-                    com.android.internal.R.attr.textColorPrimaryInverse);
+                    com.android.internal.R.attr.colorAccent);
         } else {
             Log.e("QSIconView", "Invalid state " + state);
             return 0;
