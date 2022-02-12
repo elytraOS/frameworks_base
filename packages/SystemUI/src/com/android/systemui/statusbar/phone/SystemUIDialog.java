@@ -25,6 +25,9 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Insets;
 import android.graphics.drawable.Drawable;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -50,6 +53,9 @@ import com.android.systemui.shared.system.QuickStepContract;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.zhenxiang.blur.SystemBlurController;
+import com.zhenxiang.blur.model.CornersRadius;
 
 /**
  * Base class for dialogs that should appear over panels and keyguard.
@@ -79,6 +85,8 @@ public class SystemUIDialog extends AlertDialog implements ViewRootImpl.ConfigCh
     private int mLastConfigurationHeightDp = -1;
 
     private List<Runnable> mOnCreateRunnables = new ArrayList<>();
+
+    private SystemBlurController blurController;
 
     public SystemUIDialog(Context context) {
         this(context, DEFAULT_THEME, DEFAULT_DISMISS_ON_DEVICE_LOCK);
@@ -119,9 +127,24 @@ public class SystemUIDialog extends AlertDialog implements ViewRootImpl.ConfigCh
         mLastConfigurationHeightDp = config.screenHeightDp;
         updateWindowSize();
 
+        if (useBackgroundBlur()) {
+            final Resources resources = getContext().getResources();
+            final TypedArray ta = getContext().obtainStyledAttributes(
+                    new int[] {
+                            com.android.internal.R.attr.colorSurface,
+                            android.R.attr.dialogCornerRadius});
+
+            blurController = new SystemBlurController(
+                findViewById(android.R.id.content),
+                ta.getColor(0, Color.WHITE),
+                getFloat(resources, R.dimen.background_blur_colour_opacity),
+                resources.getInteger(R.integer.background_blur_radius),
+                CornersRadius.Companion.all(ta.getDimensionPixelSize(1, 0))
+            );
+      }
         for (int i = 0; i < mOnCreateRunnables.size(); i++) {
             mOnCreateRunnables.get(i).run();
-        }
+      }
     }
 
     private void updateWindowSize() {
@@ -268,6 +291,10 @@ public class SystemUIDialog extends AlertDialog implements ViewRootImpl.ConfigCh
         }
     }
 
+    public boolean useBackgroundBlur() {
+        return true;
+    }
+
     public static void setShowForAllUsers(Dialog dialog, boolean show) {
         if (show) {
             dialog.getWindow().getAttributes().privateFlags |=
@@ -394,6 +421,15 @@ public class SystemUIDialog extends AlertDialog implements ViewRootImpl.ConfigCh
 
     private static int getDefaultDialogHeight() {
         return ViewGroup.LayoutParams.WRAP_CONTENT;
+    }
+
+    private static float getFloat(Resources resources, int id) {
+        TypedValue value = new TypedValue();
+        resources.getValue(id, value, true /* resolveRefs */);
+        if (value.type != TypedValue.TYPE_FLOAT) {
+            return Float.NaN;
+        }
+        return value.getFloat();
     }
 
     private static class DismissReceiver extends BroadcastReceiver {

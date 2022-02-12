@@ -516,8 +516,7 @@ public class MediaControlPanel {
                             }
                         }
                     } else {
-                        mMediaOutputDialogFactory.create(mPackageName, true,
-                                mMediaViewHolder.getSeamlessButton());
+                        mMediaOutputDialogFactory.create(mPackageName, true, null);
                     }
                 });
     }
