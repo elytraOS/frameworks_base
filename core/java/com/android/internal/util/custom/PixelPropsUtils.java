@@ -75,7 +75,10 @@ public class PixelPropsUtils {
         "com.google.android.apps.cameralite",
         "com.google.ar.core",
         "com.google.android.apps.wearables.maestro.companion",
-        "com.google.android.apps.recorder"
+        "com.google.android.apps.recorder",
+        "com.google.android.youtube",
+        "com.google.android.apps.youtube.kids",
+        "com.google.android.apps.youtube.music"
     };
 
     // Codenames for currently supported Pixels by Google
