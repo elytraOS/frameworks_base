@@ -122,6 +122,13 @@ public class SystemServicesTestRule implements TestRule {
     private final ArrayList<DeviceConfig.OnPropertiesChangedListener> mDeviceConfigListeners =
             new ArrayList<>();
 
+    /**
+     * The captured listeners will be unregistered in {@link #tearDown()} to avoid keeping static
+     * references of test instances from DeviceConfig.
+     */
+    private final ArrayList<DeviceConfig.OnPropertiesChangedListener> mDeviceConfigListeners =
+            new ArrayList<>();
+
     private Description mDescription;
     private Context mContext;
     private StaticMockitoSession mMockitoSession;
