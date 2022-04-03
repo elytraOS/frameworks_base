@@ -66,7 +66,7 @@ public class Flags {
     /***************************************/
     // 300 - power menu
     public static final BooleanFlag POWER_MENU_LITE =
-            new BooleanFlag(300, true);
+            new BooleanFlag(300, false);
 
     /***************************************/
     // 400 - smartspace
