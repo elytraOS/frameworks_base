@@ -14,7 +14,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources>
+<resources xmlns:androidprv="http://schemas.android.com/apk/prv/res/android">
     <!-- Pure Tuner Theme-->
     <style name="ExTunerSettings" parent="@android:style/Theme.DeviceDefault.Settings">
         <item name="preferenceTheme">@style/TunerPreferenceTheme</item>
@@ -24,5 +24,9 @@
     <style name="TriStateUiText">
         <item name="android:textSize">11.0sp</item>
         <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="Theme.DeviceDefault.SystemUI" parent="@*android:Theme.DeviceDefault.SystemUI">
+        <item name="colorSurfaceHeader">?androidprv:attr/colorSurfaceHeader</item>
     </style>
 </resources>
