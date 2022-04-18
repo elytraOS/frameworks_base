@@ -1189,12 +1189,12 @@ public class Instrumentation {
     public Application newApplication(ClassLoader cl, String className, Context context)
             throws InstantiationException, IllegalAccessException, 
             ClassNotFoundException {
+        GmsHooks.initApplicationBeforeOnCreate(context);
         Application app = getFactory(context.getPackageName())
                 .instantiateApplication(cl, className);
         app.attach(context);
         String packageName = app.getPackageName();
         PixelPropsUtils.setProps(packageName);
-        GmsHooks.initApplicationBeforeOnCreate(app);
         return app;
     }
     
@@ -1210,11 +1210,11 @@ public class Instrumentation {
     static public Application newApplication(Class<?> clazz, Context context)
             throws InstantiationException, IllegalAccessException, 
             ClassNotFoundException {
+        GmsHooks.initApplicationBeforeOnCreate(context);
         Application app = (Application)clazz.newInstance();
         app.attach(context);
         String packageName = app.getPackageName();
         PixelPropsUtils.setProps(packageName);
-        GmsHooks.initApplicationBeforeOnCreate(app);
         return app;
     }
 
