@@ -103,4 +103,7 @@
 
     <!-- Name of the call strength status bar icon. -->
     <string name="status_bar_call_strength">Call strength</string>
+
+     <!-- 5G toggle in internet dialog -->
+    <string name="enable_fiveg">Enable 5G</string>
 </resources>
