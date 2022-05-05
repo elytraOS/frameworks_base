@@ -732,10 +732,12 @@ public class Notifier {
 
     private void sendNextBroadcast() {
         final int powerState;
+        boolean isCurrentStateUnknow = false;
         synchronized (mLock) {
             if (mBroadcastedInteractiveState == INTERACTIVE_STATE_UNKNOWN) {
                 // Broadcasted power state is unknown.
                 // Send wake up or go to sleep.
+                isCurrentStateUnknow = true;
                 switch (mPendingInteractiveState) {
                     case INTERACTIVE_STATE_ASLEEP:
                         mPendingGoToSleepBroadcast = false;
@@ -746,30 +748,38 @@ public class Notifier {
                     default:
                         mPendingWakeUpBroadcast = false;
                         mBroadcastedInteractiveState = INTERACTIVE_STATE_AWAKE;
+                        if (mPendingGoToSleepBroadcast == true) {
+                            // this is unknown state and sleep broadcast are waiting
+                            // direct skip to "mBroadcastedInteractiveState == INTERACTIVE_STATE_AWAKE" step
+                           isCurrentStateUnknow = false;
+                        }
                         break;
-                }
-            } else if (mBroadcastedInteractiveState == INTERACTIVE_STATE_AWAKE) {
-                // Broadcasted power state is awake.  Send asleep if needed.
-                if (mPendingWakeUpBroadcast || mPendingGoToSleepBroadcast
-                        || mPendingInteractiveState == INTERACTIVE_STATE_ASLEEP) {
-                    mPendingGoToSleepBroadcast = false;
-                    mBroadcastedInteractiveState = INTERACTIVE_STATE_ASLEEP;
-                } else {
-                    finishPendingBroadcastLocked();
-                    return;
-                }
-            } else {
-                // Broadcasted power state is asleep.  Send awake if needed.
-                if (mPendingWakeUpBroadcast || mPendingGoToSleepBroadcast
-                        || mPendingInteractiveState == INTERACTIVE_STATE_AWAKE) {
-                    mPendingWakeUpBroadcast = false;
-                    mBroadcastedInteractiveState = INTERACTIVE_STATE_AWAKE;
-                } else {
-                    finishPendingBroadcastLocked();
-                    return;
                 }
             }
 
+            if (isCurrentStateUnknow == false) {
+                if (mBroadcastedInteractiveState == INTERACTIVE_STATE_AWAKE) {
+                    // Broadcasted power state is awake.  Send asleep if needed.
+                    if (mPendingWakeUpBroadcast || mPendingGoToSleepBroadcast
+                            || mPendingInteractiveState == INTERACTIVE_STATE_ASLEEP) {
+                        mPendingGoToSleepBroadcast = false;
+                        mBroadcastedInteractiveState = INTERACTIVE_STATE_ASLEEP;
+                    } else {
+                        finishPendingBroadcastLocked();
+                        return;
+                    }
+                } else {
+                    // Broadcasted power state is asleep.  Send awake if needed.
+                    if (mPendingWakeUpBroadcast || mPendingGoToSleepBroadcast
+                            || mPendingInteractiveState == INTERACTIVE_STATE_AWAKE) {
+                        mPendingWakeUpBroadcast = false;
+                        mBroadcastedInteractiveState = INTERACTIVE_STATE_AWAKE;
+                    } else {
+                        finishPendingBroadcastLocked();
+                        return;
+                    }
+                }
+            }
             mBroadcastStartTime = SystemClock.uptimeMillis();
             powerState = mBroadcastedInteractiveState;
         }
