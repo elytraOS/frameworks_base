@@ -2280,10 +2280,16 @@ static status_t ConvertKeyValueListsToAMessage(
                                         reinterpret_cast<jbyte *>(buffer->data()));
             }
             result->setBuffer(key.c_str(), buffer);
+        } else {
+            ALOGW("unrecognized tunings param");
         }
     }
-
-    *msg = result;
+    if (result->countEntries() > 0) {
+        *msg = result;
+    } else {
+        ALOGW("No tunings params set");
+        *msg = NULL;
+    }
     return OK;
 }
 
