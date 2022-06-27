@@ -202,7 +202,8 @@ public class DozeSensors {
                         true /* configured */,
                         DozeLog.REASON_SENSOR_DOUBLE_TAP,
                         dozeParameters.doubleTapReportsTouchCoordinates(),
-                        true /* touchscreen */),
+                        true /* touchscreen */,
+                        !dozeParameters.doubleTapNeedsProximityCheck() /* performsProxCheck */),
                 new TriggerSensor(
                         findSensors(config.tapSensorTypeMapping()),
                         Settings.Secure.DOZE_TAP_SCREEN_GESTURE,
@@ -226,6 +227,7 @@ public class DozeSensors {
                         false /* ignoresSetting */,
                         dozeParameters.longPressUsesProx() /* requiresProx */,
                         true /* immediatelyReRegister */),
+                        !dozeParameters.longPressNeedsProximityCheck() /* performsProxCheck */),
                 new TriggerSensor(
                         findSensor(config.udfpsLongPressSensorType()),
                         "doze_pulse_on_auth",
@@ -237,6 +239,7 @@ public class DozeSensors {
                         false /* ignoresSetting */,
                         dozeParameters.longPressUsesProx(),
                         false /* immediatelyReRegister */),
+                        !dozeParameters.longPressNeedsProximityCheck() /* performsProxCheck */),
                 new PluginSensor(
                         new SensorManagerPlugin.Sensor(TYPE_WAKE_DISPLAY),
                         Settings.Secure.DOZE_WAKE_DISPLAY_GESTURE,
