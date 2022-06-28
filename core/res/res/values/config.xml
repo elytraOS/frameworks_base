@@ -3030,7 +3030,6 @@
         <item>lockdown</item>
         <item>power</item>
         <item>restart</item>
-        <item>recovery</item>
         <item>logout</item>
     </string-array>
 
