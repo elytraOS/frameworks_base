@@ -23729,6 +23729,7 @@ package android.media {
     method public boolean isPlaying();
     method public void play();
     method public void setAudioAttributes(android.media.AudioAttributes) throws java.lang.IllegalArgumentException;
+    method public void setCustomAudioAttributes();
     method public boolean setHapticGeneratorEnabled(boolean);
     method public void setLooping(boolean);
     method @Deprecated public void setStreamType(int);
@@ -23740,6 +23741,7 @@ package android.media {
     ctor public RingtoneManager(android.app.Activity);
     ctor public RingtoneManager(android.content.Context);
     method public static android.net.Uri getActualDefaultRingtoneUri(android.content.Context, int);
+    method @NonNull public static android.net.Uri getActualDefaultRingtoneUriForPhoneAccountHandle(@NonNull android.content.Context, int, @NonNull android.telecom.PhoneAccountHandle);
     method public android.database.Cursor getCursor();
     method public static int getDefaultType(android.net.Uri);
     method public static android.net.Uri getDefaultUri(int);
@@ -23756,6 +23758,7 @@ package android.media {
     method public static boolean isDefault(android.net.Uri);
     method @Nullable public static android.content.res.AssetFileDescriptor openDefaultRingtoneUri(@NonNull android.content.Context, @NonNull android.net.Uri) throws java.io.FileNotFoundException;
     method public static void setActualDefaultRingtoneUri(android.content.Context, int, android.net.Uri);
+    method public static void setActualDefaultRingtoneUriForPhoneAccountHandle(@NonNull android.content.Context, int, @NonNull android.net.Uri, @NonNull android.telecom.PhoneAccountHandle);
     method @Deprecated public void setIncludeDrm(boolean);
     method public void setStopPreviousRingtone(boolean);
     method public void setType(int);
@@ -35428,6 +35431,7 @@ package android.provider {
     field public static final String SELECTED_INPUT_METHOD_SUBTYPE = "selected_input_method_subtype";
     field public static final String SETTINGS_CLASSNAME = "settings_classname";
     field public static final String SKIP_FIRST_USE_HINTS = "skip_first_use_hints";
+    field public static final String TETHERING_ALLOW_VPN_UPSTREAMS = "tethering_allow_vpn_upstreams";
     field public static final String TOUCH_EXPLORATION_ENABLED = "touch_exploration_enabled";
     field @Deprecated public static final String TTS_DEFAULT_COUNTRY = "tts_default_country";
     field @Deprecated public static final String TTS_DEFAULT_LANG = "tts_default_lang";
