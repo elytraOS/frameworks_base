@@ -31,9 +31,9 @@
 
     <!-- dimensions for the navigation bar handle -->
     <dimen name="navigation_handle_radius">2dp</dimen>
-    <dimen name="navigation_handle_bottom">10dp</dimen>
+    <dimen name="navigation_handle_bottom">6dp</dimen>
     <dimen name="navigation_handle_sample_horizontal_margin">10dp</dimen>
-    <dimen name="navigation_home_handle_width">108dp</dimen>
+    <dimen name="navigation_home_handle_width">132dp</dimen>
 
     <!-- Size of the nav bar edge panels, should be greater to the
          edge sensitivity + the drag threshold -->
