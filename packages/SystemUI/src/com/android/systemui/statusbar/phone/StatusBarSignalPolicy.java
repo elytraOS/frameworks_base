@@ -29,6 +29,7 @@ import com.android.systemui.R;
 import com.android.systemui.dagger.SysUISingleton;
 import com.android.systemui.flags.FeatureFlags;
 import com.android.systemui.statusbar.connectivity.IconState;
+import com.android.systemui.statusbar.connectivity.ImsIconState;
 import com.android.systemui.statusbar.connectivity.MobileDataIndicators;
 import com.android.systemui.statusbar.connectivity.NetworkController;
 import com.android.systemui.statusbar.connectivity.SignalCallback;
@@ -61,6 +62,7 @@ public class StatusBarSignalPolicy implements SignalCallback,
     private final String mSlotVpn;
     private final String mSlotNoCalling;
     private final String mSlotCallStrength;
+    private final String mSlotIms;
 
     private final Context mContext;
     private final StatusBarIconController mIconController;
@@ -115,6 +117,8 @@ public class StatusBarSignalPolicy implements SignalCallback,
         mSlotCallStrength =
                 mContext.getString(com.android.internal.R.string.status_bar_call_strength);
         mActivityEnabled = mContext.getResources().getBoolean(R.bool.config_showActivity);
+
+        mSlotIms      = mContext.getString(com.android.internal.R.string.status_bar_ims);
     }
 
     /** Call to initilaize and register this classw with the system. */
@@ -290,6 +294,7 @@ public class StatusBarSignalPolicy implements SignalCallback,
         state.roaming = indicators.roaming;
         state.activityIn = indicators.activityIn && mActivityEnabled;
         state.activityOut = indicators.activityOut && mActivityEnabled;
+        state.volteId = indicators.volteId;
 
         if (DEBUG) {
             Log.d(TAG, "MobileIconStates: "
@@ -523,6 +528,11 @@ public class StatusBarSignalPolicy implements SignalCallback,
         }
     }
 
+    @Override
+    public void setImsIcon(ImsIconState icon) {
+        mIconController.setImsIcon(mSlotIms, icon);
+    }
+
     private static abstract class SignalIconState {
         public boolean visible;
         public boolean activityOut;
@@ -623,6 +633,7 @@ public class StatusBarSignalPolicy implements SignalCallback,
         public boolean roaming;
         public boolean needsLeadingPadding;
         public CharSequence typeContentDescription;
+        public int volteId;
 
         private MobileIconState(int subId) {
             super();
@@ -644,6 +655,7 @@ public class StatusBarSignalPolicy implements SignalCallback,
                     && showTriangle == that.showTriangle
                     && roaming == that.roaming
                     && needsLeadingPadding == that.needsLeadingPadding
+                    && volteId == that.volteId
                     && Objects.equals(typeContentDescription, that.typeContentDescription);
         }
 
@@ -670,6 +682,7 @@ public class StatusBarSignalPolicy implements SignalCallback,
             other.roaming = roaming;
             other.needsLeadingPadding = needsLeadingPadding;
             other.typeContentDescription = typeContentDescription;
+            other.volteId = volteId;
         }
 
         private static List<MobileIconState> copyStates(List<MobileIconState> inStates) {
@@ -686,7 +699,7 @@ public class StatusBarSignalPolicy implements SignalCallback,
         @Override public String toString() {
             return "MobileIconState(subId=" + subId + ", strengthId=" + strengthId
                     + ", showTriangle=" + showTriangle + ", roaming=" + roaming
-                    + ", typeId=" + typeId + ", visible=" + visible + ")";
+                    + ", typeId=" + typeId + ", visible=" + visible + ", volteId=" + volteId + ")";
         }
     }
 }
