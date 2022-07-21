@@ -31,8 +31,10 @@ import android.compat.annotation.UnsupportedAppUsage;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.IPackageManager;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.Parcel;
@@ -774,10 +776,14 @@ public class VpnService extends Service {
         private void verifyApp(String packageName) throws PackageManager.NameNotFoundException {
             IPackageManager pm = IPackageManager.Stub.asInterface(
                     ServiceManager.getService("package"));
+            ApplicationInfo ai = null;
             try {
-                pm.getApplicationInfo(packageName, 0, UserHandle.getCallingUserId());
+                ai = pm.getApplicationInfo(packageName, 0, UserHandle.getCallingUserId());
             } catch (RemoteException e) {
-                throw new IllegalStateException(e);
+                //ignoring
+            }
+            if (ai == null) {
+                throw new NameNotFoundException("Package " + packageName + " doesn't exist");
             }
         }
 
