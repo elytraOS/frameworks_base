@@ -74,6 +74,7 @@ import android.telephony.TelephonyManager;
 import android.util.ArraySet;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
+import android.view.CrossWindowBlurListeners;
 import android.view.GestureDetector;
 import android.view.IWindowManager;
 import android.view.LayoutInflater;
@@ -118,9 +119,12 @@ import com.android.systemui.broadcast.BroadcastDispatcher;
 import com.android.systemui.colorextraction.SysuiColorExtractor;
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
+import com.android.systemui.dump.DumpManager;
+import com.android.systemui.model.SysUiState;
 import com.android.systemui.plugins.GlobalActions.GlobalActionsManager;
 import com.android.systemui.plugins.GlobalActionsPanelPlugin;
 import com.android.systemui.scrim.ScrimDrawable;
+import com.android.systemui.statusbar.BlurUtils;
 import com.android.systemui.statusbar.NotificationShadeWindowController;
 import com.android.systemui.statusbar.VibratorHelper;
 import com.android.systemui.statusbar.phone.CentralSurfaces;
@@ -912,16 +916,12 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
         public View create(
                 Context context, View convertView, ViewGroup parent, LayoutInflater inflater) {
             View v = super.create(context, convertView, parent, inflater);
-            int textColor = getEmergencyTextColor(context);
-            int iconColor = getEmergencyIconColor(context);
-            int backgroundColor = getEmergencyBackgroundColor(context);
             TextView messageView = v.findViewById(R.id.message);
-            messageView.setTextColor(textColor);
             messageView.setSelected(true); // necessary for marquee to work
             ImageView icon = v.findViewById(R.id.icon);
-            icon.getDrawable().setTint(iconColor);
-            icon.setBackgroundTintList(ColorStateList.valueOf(backgroundColor));
-            v.setBackgroundTintList(ColorStateList.valueOf(backgroundColor));
+            icon.getDrawable().setTint(getEmergencyIconColor(context));
+            icon.setBackgroundResource(com.android.systemui.R.drawable.global_actions_lite_emergency_button);
+//            v.setBackgroundTintList(ColorStateList.valueOf(backgroundColor));
             return v;
         }
 
@@ -936,19 +936,9 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
         }
     }
 
-    protected int getEmergencyTextColor(Context context) {
-        return context.getResources().getColor(
-                com.android.systemui.R.color.global_actions_lite_text);
-    }
-
     protected int getEmergencyIconColor(Context context) {
         return context.getResources().getColor(
                 com.android.systemui.R.color.global_actions_lite_emergency_icon);
-    }
-
-    protected int getEmergencyBackgroundColor(Context context) {
-        return context.getResources().getColor(
-                com.android.systemui.R.color.global_actions_lite_emergency_background);
     }
 
     private class EmergencyAffordanceAction extends EmergencyAction {
@@ -2374,7 +2364,6 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
         protected Drawable mBackgroundDrawable;
         protected final SysuiColorExtractor mColorExtractor;
         private boolean mKeyguardShowing;
-        protected float mScrimAlpha;
         protected final NotificationShadeWindowController mNotificationShadeWindowController;
         private ListPopupWindow mOverflowPopup;
         private Dialog mPowerOptionsDialog;
@@ -2385,6 +2374,7 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
         private KeyguardUpdateMonitor mKeyguardUpdateMonitor;
         private LockPatternUtils mLockPatternUtils;
         private float mWindowDimAmount;
+        private BlurUtils mBlurUtils;
 
         protected ViewGroup mContainer;
 
@@ -2458,6 +2448,8 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
             mKeyguardUpdateMonitor = keyguardUpdateMonitor;
             mLockPatternUtils = lockPatternUtils;
             mGestureDetector = new GestureDetector(mContext, mGestureListener);
+            mBlurUtils = new BlurUtils(mContext.getResources(),
+                    CrossWindowBlurListeners.getInstance(), new DumpManager());
         }
 
         @Override
@@ -2575,8 +2567,13 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
 
             if (mBackgroundDrawable == null) {
                 mBackgroundDrawable = new ScrimDrawable();
-                mScrimAlpha = 1.0f;
             }
+
+            float bgAlpha = 0.88f;
+            if (mBlurUtils.supportsBlursOnWindows()) {
+                bgAlpha = 0.54f;
+            }
+            getWindow().setDimAmount(bgAlpha);
 
             // If user entered from the lock screen and smart lock was enabled, disable it
             int user = KeyguardUpdateMonitor.getCurrentUser();
