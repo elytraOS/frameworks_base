@@ -1119,7 +1119,7 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
               won't show the LegacyGlobalActions after systemui restart.
             */
             mWindowManagerFuncs.onGlobalActionsHidden();
-            Process.killProcess(Process.myPid());
+            restartSystemUI();
         }
     }
 
@@ -1444,6 +1444,10 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
         mAirplaneModeOn.updateState(mAirplaneState);
         mAdapter.notifyDataSetChanged();
         mLifecycle.setCurrentState(Lifecycle.State.RESUMED);
+    }
+
+    private void restartSystemUI() {
+       android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     private void refreshSilentMode() {
