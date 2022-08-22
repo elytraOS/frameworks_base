@@ -473,7 +473,7 @@ public final class ProcessState {
                 }
             }
             mCurCombinedState = state;
-            final UidState uidState = mStats.mUidStates.get(mUid);
+            UidState uidState = mStats.mUidStates.get(mUid);
             if (uidState != null) {
                 uidState.updateCombinedState(state, now);
             }
