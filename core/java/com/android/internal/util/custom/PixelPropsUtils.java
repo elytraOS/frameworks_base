@@ -30,6 +30,7 @@ import java.util.Map;
 public class PixelPropsUtils {
 
     public static final String PACKAGE_GMS = "com.google.android.gms";
+    public static final String PACKAGE_FINSKY = "com.android.vending";
     public static final String PACKAGE_NETFLIX = "com.netflix.mediaclient";
     private static final String TAG = PixelPropsUtils.class.getSimpleName();
     private static final boolean DEBUG = false;
@@ -49,8 +50,8 @@ public class PixelPropsUtils {
     private static final Map<String, ArrayList<String>> propsToKeep;
     private static final String[] extraPackagesToChange = {
             "com.android.chrome",
-            "com.android.vending",
             "com.breel.wallpapers20",
+            PACKAGE_FINSKY,
             PACKAGE_NETFLIX
     };
 
@@ -78,6 +79,7 @@ public class PixelPropsUtils {
     private static ArrayList<String> allProps = new ArrayList<>(Arrays.asList("BRAND", "MANUFACTURER", "DEVICE", "PRODUCT", "MODEL", "FINGERPRINT"));
 
     private static volatile boolean sIsGms = false;
+    private static volatile boolean sIsFinsky = false;
 
     static {
         propsToKeep = new HashMap<>();
@@ -115,6 +117,10 @@ public class PixelPropsUtils {
         if (packageName.equals(PACKAGE_GMS) &&
                 processName.equals(PACKAGE_GMS + ".unstable")) {
             sIsGms = true;
+        }
+        if (packageName.equals(PACKAGE_FINSKY) &&
+               processName.equals(PACKAGE_FINSKY + ".vending")) {
+            sIsFinsky = true;
         }
         if (packageName.equals(PACKAGE_NETFLIX) && !SystemProperties.getBoolean(
                 "persist.pixelpropsutils.spoof_netflix", false)) {
@@ -175,6 +181,11 @@ public class PixelPropsUtils {
     public static void onEngineGetCertificateChain() {
         // Check stack for SafetyNet
         if (sIsGms && isCallerSafetyNet()) {
+            throw new UnsupportedOperationException();
+        }
+
+        // Check stack for PlayIntegrity
+        if (sIsFinsky) {
             throw new UnsupportedOperationException();
         }
     }
