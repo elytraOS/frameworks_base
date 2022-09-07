@@ -462,6 +462,7 @@ public interface ServiceConnector<I extends IInterface> {
                 if (bindService(mServiceConnection)) {
                     mBinding = true;
                 } else {
+                    mQueue.remove(job);
                     completeExceptionally(job,
                             new IllegalStateException("Failed to bind to service " + mIntent));
                 }
@@ -795,7 +796,9 @@ public interface ServiceConnector<I extends IInterface> {
             @Override
             protected void onCompleted(R res, Throwable err) {
                 super.onCompleted(res, err);
-                if (mUnfinishedJobs.remove(this)) {
+                final boolean r1 = mQueue.remove(this);
+                final boolean r2 = mUnfinishedJobs.remove(this);
+                if (r1 || r2) {
                     maybeScheduleUnbindTimeout();
                 }
             }
