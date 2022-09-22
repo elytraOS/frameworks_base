@@ -197,6 +197,9 @@ public class PreferencesHelper implements RankingConfig {
 
     private boolean mAllowInvalidShortcuts = false;
 
+    private boolean mShouldMigratePerm = false;
+    ArrayList<PermissionHelper.PackagePermission> mPkgPerms = new ArrayList<>();
+
     public PreferencesHelper(Context context, PackageManager pm, RankingHandler rankingHandler,
             ZenModeHelper zenHelper, PermissionHelper permHelper,
             NotificationChannelLogger notificationChannelLogger,
@@ -265,13 +268,26 @@ public class PreferencesHelper implements RankingConfig {
             }
         }
         if (migrateToPermission) {
+            mShouldMigratePerm = true;
             for (PackagePermission p : pkgPerms) {
+                mPkgPerms.add(p);
+            }
+        }
+    }
+
+    /**
+     * Perform permission migration after the PermissionService pregrant
+     */
+    public void startPermMigrationIfNeeded() {
+        if (mShouldMigratePerm) {
+            for (PackagePermission p : mPkgPerms) {
                 try {
                     mPermissionHelper.setNotificationPermission(p);
                 } catch (Exception e) {
                     Slog.e(TAG, "could not migrate setting for " + p.packageName, e);
                 }
             }
+            mShouldMigratePerm = false;
         }
     }
 
