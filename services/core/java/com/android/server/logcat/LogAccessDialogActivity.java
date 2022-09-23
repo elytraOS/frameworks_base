@@ -46,7 +46,7 @@ public class LogAccessDialogActivity extends Activity implements
         View.OnClickListener {
     private static final String TAG = LogAccessDialogActivity.class.getSimpleName();
 
-    private static final int DIALOG_TIME_OUT = Build.IS_DEBUGGABLE ? 60000 : 300000;
+    private static final int DIALOG_TIME_OUT = Build.IS_ENG ? 60000 : 300000;
     private static final int MSG_DISMISS_DIALOG = 0;
 
     private final LogcatManagerService.LogcatManagerServiceInternal mLogcatManagerInternal =

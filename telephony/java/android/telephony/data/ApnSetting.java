@@ -2193,7 +2193,7 @@ public class ApnSetting implements Parcelable {
             }
             if ((mApnTypeBitmask & TYPE_MMS) != 0 && !TextUtils.isEmpty(mMmsProxyAddress)
                     && mMmsProxyAddress.startsWith("http")) {
-                if (Build.IS_DEBUGGABLE) {
+                if (Build.IS_ENG) {
                     throw new IllegalArgumentException("mms proxy(" +  mMmsProxyAddress
                             + ") should be a hostname, not a url");
                 }
