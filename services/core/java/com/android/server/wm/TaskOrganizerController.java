@@ -791,6 +791,11 @@ class TaskOrganizerController extends ITaskOrganizerController.Stub {
         boolean changed = !mTmpTaskInfo.equalsForTaskOrganizer(lastInfo)
                 || !configurationsAreEqualForOrganizer(
                         mTmpTaskInfo.configuration, lastInfo.configuration);
+        if (!changed && !force && task.mCreatedByOrganizer) {
+            changed |= mTmpTaskInfo.topActivity != null && lastInfo.topActivity != null
+                    && !java.util.Objects.equals(mTmpTaskInfo.topActivity.getPackageName(),
+                    lastInfo.topActivity.getPackageName());
+        }
         if (!(changed || force)) {
             // mTmpTaskInfo will be reused next time.
             return;
