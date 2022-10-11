@@ -242,5 +242,5 @@
 
     <color name="volume_seekbar_bg">@android:color/system_accent2_100</color>
     
-    <color name="keyguard_affordance_background_color">#80000000</color>
+    <color name="keyguard_affordance_background_color">#50181c1f</color>
 </resources>
