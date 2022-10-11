@@ -42,11 +42,14 @@ import java.util.Locale;
 @RemoteViews.RemoteView
 public class NotificationExpandButton extends FrameLayout {
 
+    private View mPillView;
     private TextView mNumberView;
     private ImageView mIconView;
     private boolean mExpanded;
     private int mNumber;
+    private int mDefaultPillColor;
     private int mDefaultTextColor;
+    private int mHighlightPillColor;
     private int mHighlightTextColor;
 
     public NotificationExpandButton(Context context) {
@@ -70,6 +73,7 @@ public class NotificationExpandButton extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        mPillView = findViewById(R.id.expand_button_pill);
         mNumberView = findViewById(R.id.expand_button_number);
         mIconView = findViewById(R.id.expand_button_icon);
     }
@@ -151,11 +155,17 @@ public class NotificationExpandButton extends FrameLayout {
 
     private void updateColors() {
         if (shouldShowNumber()) {
+            if (mHighlightPillColor != 0) {
+                mPillView.setBackgroundTintList(ColorStateList.valueOf(mHighlightPillColor));
+            }
             mIconView.setColorFilter(mHighlightTextColor);
             if (mHighlightTextColor != 0) {
                 mNumberView.setTextColor(mHighlightTextColor);
             }
         } else {
+            if (mDefaultPillColor != 0) {
+                mPillView.setBackgroundTintList(ColorStateList.valueOf(mDefaultPillColor));
+            }
             mIconView.setColorFilter(mDefaultTextColor);
             if (mDefaultTextColor != 0) {
                 mNumberView.setTextColor(mDefaultTextColor);
@@ -181,7 +191,8 @@ public class NotificationExpandButton extends FrameLayout {
      */
     @RemotableViewMethod
     public void setDefaultPillColor(@ColorInt int color) {
-        // no op, but whole android gonna error out otherwise
+        mDefaultPillColor = color;
+        updateColors();
     }
 
     /**
@@ -198,7 +209,8 @@ public class NotificationExpandButton extends FrameLayout {
      */
     @RemotableViewMethod
     public void setHighlightPillColor(@ColorInt int color) {
-        // no-op
+        mHighlightPillColor = color;
+        updateColors();
     }
 
     /**
