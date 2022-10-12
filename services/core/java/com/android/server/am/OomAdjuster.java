@@ -91,6 +91,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.ServiceInfo;
+import android.hardware.power.Mode;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManagerInternal;
@@ -237,6 +238,7 @@ public class OomAdjuster {
     int mBServiceAppThreshold = 5;
     // Enable B-service aging propagation on memory pressure.
     boolean mEnableBServicePropagation = false;
+    public static int mCurRenderThreadTid = -1;
     public static boolean mIsTopAppRenderThreadBoostEnabled = false;
     
     private final int mNumSlots;
@@ -1612,22 +1614,21 @@ public class OomAdjuster {
 
         boolean foregroundActivities = false;
         boolean hasVisibleActivities = false;
-        if (app == topApp && (PROCESS_STATE_CUR_TOP == PROCESS_STATE_TOP
-                || PROCESS_STATE_CUR_TOP == PROCESS_STATE_IMPORTANT_FOREGROUND)) {
+        if (PROCESS_STATE_CUR_TOP == PROCESS_STATE_TOP && app == topApp) {
             // The last app on the list is the foreground app.
             adj = ProcessList.FOREGROUND_APP_ADJ;
-            if (PROCESS_STATE_CUR_TOP == PROCESS_STATE_TOP) {
-                schedGroup = ProcessList.SCHED_GROUP_TOP_APP;
-                state.setAdjType("top-activity");
-            } else {
-                // Demote the scheduling group to avoid CPU contention if there is another more
-                // important process which also uses top-app, such as if SystemUI is animating.
-                schedGroup = ProcessList.SCHED_GROUP_DEFAULT;
-                state.setAdjType("intermediate-top-activity");
-            }
+            schedGroup = ProcessList.SCHED_GROUP_TOP_APP;
+            state.setAdjType("top-activity");
             foregroundActivities = true;
             hasVisibleActivities = true;
             procState = PROCESS_STATE_CUR_TOP;
+
+            if(mIsTopAppRenderThreadBoostEnabled) {
+                if(mCurRenderThreadTid != app.getRenderThreadTid() && app.getRenderThreadTid() > 0) {
+                    mCurRenderThreadTid = app.getRenderThreadTid();
+                    mLocalPowerManager.setPowerMode(Mode.GAME_LOADING, true);
+                }
+            }
 
             if (DEBUG_OOM_ADJ_REASON || logUid == appUid) {
                 reportOomAdjMessageLocked(TAG_OOM_ADJ, "Making top: " + app);
@@ -2720,7 +2721,7 @@ public class OomAdjuster {
                             } else {
                                 // Boost priority for top app UI and render threads
                                 setThreadPriority(app.getPid(), THREAD_PRIORITY_TOP_APP_BOOST);
-                                if (mIsTopAppRenderThreadBoostEnabled && renderThreadTid != 0) {
+                                if (renderThreadTid != 0) {
                                     try {
                                         setThreadPriority(renderThreadTid,
                                                 THREAD_PRIORITY_TOP_APP_BOOST);
