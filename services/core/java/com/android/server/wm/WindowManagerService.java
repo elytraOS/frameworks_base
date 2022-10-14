@@ -3682,12 +3682,6 @@ public class WindowManagerService extends IWindowManager.Stub
                 return;
             }
 
-            // If we're booting headless, we don't need to wait for the display to enable
-            // (it won't!). Proceed with telling SurfaceFlinger that we've booted.
-            if (SystemProperties.getBoolean("ro.surface_flinger.use_headless_mode", false)) {
-                mForceDisplayEnabled = true;
-            }
-
             // Don't enable the screen until all existing windows have been drawn.
             if (!mForceDisplayEnabled) {
                 if (mBootWaitForWindowsStartTime < 0) {
