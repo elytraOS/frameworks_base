@@ -136,7 +136,7 @@ public class PropImitationHooks {
         }
     }
 
-    private static void setPropValue(String key, Object value) {
+    static void setPropValue(String key, Object value) {
         try {
             dlog("Setting prop " + key + " to " + value.toString());
             Field field = Build.class.getDeclaredField(key);
@@ -169,7 +169,7 @@ public class PropImitationHooks {
         return def;
     }
 
-    private static void dlog(String msg) {
+    static void dlog(String msg) {
       if (DEBUG) Log.d(TAG, msg);
     }
 }
