@@ -65,7 +65,7 @@ public class PropImitationHooks {
         "DEVICE", "redfin",
         "PRODUCT", "redfin",
         "MODEL", "Pixel 5",
-        "FINGERPRINT", "google/redfin/redfin:13/TQ1A.230105.001/9292298:user/release-keys"
+        "FINGERPRINT", "google/redfin/redfin:13/TQ2A.230305.008.C1/9619669:user/release-keys"
     );
 
     private static final Map<String, Object> sPixelXLProps = Map.of(
