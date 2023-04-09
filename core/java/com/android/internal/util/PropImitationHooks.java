@@ -95,6 +95,9 @@ public class PropImitationHooks {
         sIsFinsky = packageName.equals(PACKAGE_FINSKY);
         sIsPhotos = sSpoofGapps && packageName.equals(PACKAGE_GPHOTOS);
 
+        /* Set Certified Fingerprint for GMSCore or Finsky
+         * Set Stock Fingerprint for ARCore
+         */
         if (!sCertifiedFp.isEmpty() && sIsGms) {
             dlog("Spoofing build for GMS");
             setPropValue("FINGERPRINT", sCertifiedFp);
